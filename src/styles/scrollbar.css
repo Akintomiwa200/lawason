@@ -1,0 +1,76 @@
+/* ─── Scrollbar configuration ─────────────────────────────────────────────
+   Adjust these tokens to theme the scrollbar across the app.
+   The bar auto-shows while scrolling and fades out when idle.
+   Requires `scrollbar-active` on <html> (see ScrollbarProvider).
+──────────────────────────────────────────────────────────────────────────── */
+:root,
+.light {
+  --scrollbar-size: 6px;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #16a34a;
+  --scrollbar-thumb-hover: #15803d;
+  --scrollbar-thumb-idle: transparent;
+  --scrollbar-thumb-active: rgba(22, 163, 74, 0.85);
+  --scrollbar-hide-delay: 900ms;
+}
+
+.dark {
+  --scrollbar-thumb: #22c55e;
+  --scrollbar-thumb-hover: #4ade80;
+  --scrollbar-thumb-active: rgba(74, 222, 128, 0.9);
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-idle) var(--scrollbar-track);
+}
+
+html.scrollbar-active {
+  scrollbar-color: var(--scrollbar-thumb-active) var(--scrollbar-track);
+}
+
+/* WebKit */
+html::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+html::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-idle);
+  border-radius: 999px;
+  transition: background 0.35s ease, opacity 0.35s ease;
+}
+
+html.scrollbar-active::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-active);
+}
+
+html.scrollbar-active::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Also target body for browsers that attach scroll to body */
+body::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-idle);
+  border-radius: 999px;
+  transition: background 0.35s ease;
+}
+
+html.scrollbar-active body::-webkit-scrollbar-thumb,
+body.scrollbar-active::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-active);
+}

@@ -1,0 +1,247 @@
+@import "tailwindcss";
+@import "../src/styles/scrollbar.css";
+
+@custom-variant dark {
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:where(html:not(.light), html:not(.light) *) {
+      @slot;
+    }
+  }
+}
+
+/* GM Lawason Studios — white · green · black */
+html.light,
+html:not(.dark) {
+  --font-sans: var(--font-dm-sans), var(--font-jakarta), ui-sans-serif, system-ui,
+    -apple-system, sans-serif;
+  --font-display: var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system,
+    sans-serif;
+  --font-code: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-landing: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --surface: #ffffff;
+  --surface-elevated: #fafafa;
+  --muted: #525252;
+  --border: #e5e5e5;
+  --accent: #16a34a;
+  --accent-foreground: #ffffff;
+  --glow: rgba(22, 163, 74, 0.28);
+  --spotlight: rgba(22, 163, 74, 0.07);
+  --gradient-start: #ffffff;
+  --gradient-end: #f5f5f5;
+
+  /* About page tokens */
+  --lp-bg: var(--background);
+  --lp-text: var(--foreground);
+  --lp-text-muted: var(--muted);
+  --lp-card-alt: var(--surface-elevated);
+  --lp-faq-row-bg: var(--surface-elevated);
+  --lp-faq-row-border: var(--border);
+  --lp-team-section-bg: var(--surface-elevated);
+  --lp-team-card-bg: var(--surface);
+  --lp-team-card-border: var(--border);
+  --lp-team-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --lp-team-image-bg: var(--surface-elevated);
+  --lp-stats-glass-bg: rgba(255, 255, 255, 0.75);
+  --lp-stats-glass-border: var(--border);
+  --lp-stats-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --lp-stats-glow-pink: rgba(22, 163, 74, 0.12);
+  --lp-stats-glow-purple: rgba(22, 163, 74, 0.18);
+  --lp-stats-glow-blue: rgba(22, 163, 74, 0.1);
+  --lp-border: var(--border);
+  --lp-cta-card-bg: #0a0a0a;
+
+  --hero-gradient-from: #dcfce7;
+  --hero-gradient-via: #f0fdf4;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) {
+    --font-sans: var(--font-dm-sans), var(--font-jakarta), ui-sans-serif, system-ui,
+      -apple-system, sans-serif;
+    --font-display: var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system,
+      sans-serif;
+    --font-code: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+    --font-landing: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+    --background: #0a0a0a;
+    --foreground: #fafafa;
+    --surface: #141414;
+    --surface-elevated: #1a1a1a;
+    --muted: #a3a3a3;
+    --border: #262626;
+    --accent: #22c55e;
+    --accent-foreground: #0a0a0a;
+    --glow: rgba(34, 197, 94, 0.32);
+    --spotlight: rgba(34, 197, 94, 0.06);
+    --gradient-start: #0a0a0a;
+    --gradient-end: #141414;
+
+    --lp-bg: var(--background);
+    --lp-text: var(--foreground);
+    --lp-text-muted: var(--muted);
+    --lp-card-alt: var(--surface-elevated);
+    --lp-faq-row-bg: var(--surface);
+    --lp-faq-row-border: var(--border);
+    --lp-team-section-bg: var(--background);
+    --lp-team-card-bg: var(--surface);
+    --lp-team-card-border: var(--border);
+    --lp-team-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    --lp-team-image-bg: var(--surface-elevated);
+    --lp-stats-glass-bg: rgba(20, 20, 20, 0.75);
+    --lp-stats-glass-border: var(--border);
+    --lp-stats-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    --lp-stats-glow-pink: rgba(34, 197, 94, 0.15);
+    --lp-stats-glow-purple: rgba(34, 197, 94, 0.22);
+    --lp-stats-glow-blue: rgba(34, 197, 94, 0.12);
+    --lp-border: var(--border);
+    --lp-cta-card-bg: #141414;
+
+    --hero-gradient-from: #166534;
+    --hero-gradient-via: #14532d;
+  }
+}
+
+html.dark {
+  --font-sans: var(--font-dm-sans), var(--font-jakarta), ui-sans-serif, system-ui,
+    -apple-system, sans-serif;
+  --font-display: var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system,
+    sans-serif;
+  --font-code: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-landing: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --surface: #141414;
+  --surface-elevated: #1a1a1a;
+  --muted: #a3a3a3;
+  --border: #262626;
+  --accent: #22c55e;
+  --accent-foreground: #0a0a0a;
+  --glow: rgba(34, 197, 94, 0.32);
+  --spotlight: rgba(34, 197, 94, 0.06);
+  --gradient-start: #0a0a0a;
+  --gradient-end: #141414;
+
+  --lp-bg: var(--background);
+  --lp-text: var(--foreground);
+  --lp-text-muted: var(--muted);
+  --lp-card-alt: var(--surface-elevated);
+  --lp-faq-row-bg: var(--surface);
+  --lp-faq-row-border: var(--border);
+  --lp-team-section-bg: var(--background);
+  --lp-team-card-bg: var(--surface);
+  --lp-team-card-border: var(--border);
+  --lp-team-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --lp-team-image-bg: var(--surface-elevated);
+  --lp-stats-glass-bg: rgba(20, 20, 20, 0.75);
+  --lp-stats-glass-border: var(--border);
+  --lp-stats-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --lp-stats-glow-pink: rgba(34, 197, 94, 0.15);
+  --lp-stats-glow-purple: rgba(34, 197, 94, 0.22);
+  --lp-stats-glow-blue: rgba(34, 197, 94, 0.12);
+  --lp-border: var(--border);
+  --lp-cta-card-bg: #141414;
+
+  --hero-gradient-from: #166534;
+  --hero-gradient-via: #14532d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-brand-green: #15803d;
+  --color-brand-green-dark: #14532d;
+  --color-brand-green-light: #4ade80;
+  --color-brand-highlight: #dcfce7;
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-code);
+  --shadow-glow: 0 0 40px var(--glow);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply h-full scroll-smooth;
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply min-h-full bg-background text-foreground antialiased;
+    background-image: radial-gradient(
+      ellipse 80% 50% at 50% -20%,
+      var(--spotlight),
+      transparent
+    );
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-brand-gradient {
+    background: linear-gradient(
+      135deg,
+      var(--gradient-start) 0%,
+      var(--gradient-end) 100%
+    );
+  }
+
+  .landing-root {
+    @apply min-h-full bg-background text-foreground;
+    font-family: var(--font-landing);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-code {
+    font-family: var(--font-code);
+  }
+
+  .font-nunito {
+    font-family: var(--font-nunito), ui-sans-serif, sans-serif;
+  }
+
+  .font-bricolage {
+    font-family: var(--font-bricolage), ui-sans-serif, sans-serif;
+  }
+
+  .container-content {
+    @apply mx-auto w-full max-w-7xl px-6;
+  }
+
+  .bg-marketing-bg {
+    @apply bg-background;
+  }
+
+  .pb-section {
+    @apply pb-16 md:pb-20;
+  }
+
+  .shadow-float {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  }
+
+  .shadow-marketing {
+    box-shadow: 0 4px 14px rgba(21, 128, 61, 0.35);
+  }
+}
