@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 import { partners } from "@/lib/partners";
 import { cn } from "@/lib/utils";
@@ -137,7 +137,7 @@ export function PartnerMarquee({
         aria-hidden="true"
       />
 
-      <motion.div
+      <m.div
         className="flex w-max items-center"
         animate={{ x: "-50%" }}
         transition={{
@@ -149,7 +149,7 @@ export function PartnerMarquee({
       >
         <PartnerTrack trackId="a" className={itemClassName} />
         <PartnerTrack trackId="b" ariaHidden className={itemClassName} />
-      </motion.div>
+      </m.div>
     </>
   );
 }

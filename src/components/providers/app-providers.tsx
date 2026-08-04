@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Toaster } from "sonner";
 
 import { ScrollbarProvider } from "@/components/providers/scrollbar-provider";
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { useResolvedTheme } from "@/hooks/use-theme";
 
@@ -28,12 +29,14 @@ function SonnerToaster() {
 export function AppProviders({ children }: AppProvidersProps) {
   return (
     <ThemeProvider defaultTheme="system">
-      <SessionProvider>
-        <ScrollbarProvider>
-          {children}
-          <SonnerToaster />
-        </ScrollbarProvider>
-      </SessionProvider>
+      <MotionProvider>
+        <SessionProvider>
+          <ScrollbarProvider>
+            {children}
+            <SonnerToaster />
+          </ScrollbarProvider>
+        </SessionProvider>
+      </MotionProvider>
     </ThemeProvider>
   );
 }

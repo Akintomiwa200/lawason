@@ -1,14 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { HomeHeroPartners } from "@/components/home/home-hero-partners";
+import { Reveal, ScaleIn } from "@/components/motion/reveal";
 import { company } from "@/lib/company";
 
 export function HomeHero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[var(--hero-gradient-from)] via-[var(--hero-gradient-via)] to-background pb-4">
-      <div className="mx-auto max-w-3xl px-6 pt-24 text-center sm:pt-28 md:pt-32">
+      <Reveal className="mx-auto max-w-3xl px-6 pt-24 text-center sm:pt-28 md:pt-32">
         <p className="font-display text-base italic text-foreground/85 md:text-lg">
           Light-first craft. Real results.
         </p>
@@ -32,9 +35,12 @@ export function HomeHero() {
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
-      </div>
+      </Reveal>
 
-      <div className="relative mx-auto mt-12 w-full max-w-4xl px-6 sm:mt-14 md:mt-16">
+      <ScaleIn
+        delay={0.12}
+        className="relative mx-auto mt-12 w-full max-w-4xl px-6 sm:mt-14 md:mt-16"
+      >
         <div className="relative mx-auto aspect-[1024/1536] w-full max-w-[580px] overflow-hidden rounded-2xl">
           <Image
             src="/hero_image.png"
@@ -45,7 +51,7 @@ export function HomeHero() {
             className="object-cover object-top"
           />
         </div>
-      </div>
+      </ScaleIn>
 
       <HomeHeroPartners />
     </section>
