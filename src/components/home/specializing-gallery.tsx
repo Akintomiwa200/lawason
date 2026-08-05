@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { Reveal, RevealItem, RevealStagger, ScaleIn } from "@/components/motion/reveal";
+import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal";
 import { homeImages } from "@/lib/home-images";
 import { cn } from "@/lib/utils";
 

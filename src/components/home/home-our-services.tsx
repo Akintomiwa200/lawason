@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal";
 import { homeImages } from "@/lib/home-images";
-import { cn } from "@/lib/utils";
 
 const services = [
   {
@@ -12,7 +11,7 @@ const services = [
     title: "Filmmaking",
     description:
       "End-to-end production from concept to final cut — managed with cinematic intent from pre-production through post.",
-    image: { ...homeImages.director, className: "aspect-[4/5]" },
+    image: homeImages.director,
     layout: "image-first" as const,
   },
   {
@@ -20,7 +19,7 @@ const services = [
     title: "Cinematography",
     description:
       "Visual storytelling with depth, mood, and motion — composition, movement, and lens choices that elevate every frame.",
-    image: { ...homeImages.cinematographer, className: "aspect-[4/3]" },
+    image: homeImages.cinematographer,
     layout: "text-first" as const,
   },
   {
@@ -28,7 +27,7 @@ const services = [
     title: "Special Effect Lighting",
     description:
       "Professional gaffer and lighting design that transforms ordinary scenes into cinematic moments on set.",
-    image: { ...homeImages.lighting, className: "aspect-[4/5]" },
+    image: homeImages.lighting,
     layout: "image-first" as const,
   },
 ];
@@ -37,20 +36,13 @@ function ServiceCard({
   number,
   title,
   description,
-  className,
 }: {
   number: number;
   title: string;
   description: string;
-  className?: string;
 }) {
   return (
-    <article
-      className={cn(
-        "relative flex min-h-[11rem] flex-col justify-end rounded-[1.25rem] bg-surface p-6 sm:min-h-[12rem] sm:p-7",
-        className,
-      )}
-    >
+    <article className="relative flex w-full flex-col justify-end rounded-[1.25rem] bg-surface p-6 sm:p-7">
       <span className="absolute right-5 top-5 flex h-7 w-7 items-center justify-center rounded-full border border-border text-xs font-medium text-muted">
         {number}
       </span>
@@ -62,17 +54,9 @@ function ServiceCard({
   );
 }
 
-function ServiceImage({
-  src,
-  alt,
-  className,
-}: {
-  src: string;
-  alt: string;
-  className: string;
-}) {
+function ServiceImage({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className={cn("relative overflow-hidden rounded-[1.25rem]", className)}>
+    <div className="relative aspect-[4/5] w-full min-w-0 overflow-hidden rounded-[1.25rem]">
       <Image
         src={src}
         alt={alt}
@@ -105,15 +89,17 @@ export function HomeOurServices() {
           </p>
         </Reveal>
 
-        <RevealStagger className="mt-12 grid grid-cols-1 gap-4 md:mt-14 md:grid-cols-3 md:gap-5">
+        <RevealStagger className="mt-12 grid w-full grid-cols-1 gap-4 md:mt-14 md:grid-cols-3 md:gap-5">
           {services.map((service) => (
-            <RevealItem key={service.number} className="flex flex-col gap-4 md:gap-5">
+            <RevealItem
+              key={service.number}
+              className="flex w-full min-w-0 flex-col gap-4 md:gap-5"
+            >
               {service.layout === "image-first" ? (
                 <>
                   <ServiceImage
                     src={service.image.src}
                     alt={service.image.alt}
-                    className={service.image.className}
                   />
                   <ServiceCard
                     number={service.number}
@@ -131,7 +117,6 @@ export function HomeOurServices() {
                   <ServiceImage
                     src={service.image.src}
                     alt={service.image.alt}
-                    className={service.image.className}
                   />
                 </>
               )}

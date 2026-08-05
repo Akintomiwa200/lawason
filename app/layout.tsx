@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 
 import { AppProviders } from "@/components/providers/app-providers";
 import { company } from "@/lib/company";
@@ -31,7 +30,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${fontVariables} min-h-full font-sans antialiased`}>
-        <Script src="/theme-init.js" strategy="beforeInteractive" />
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

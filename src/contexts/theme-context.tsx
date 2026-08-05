@@ -28,28 +28,34 @@ interface ThemeProviderProps {
   defaultTheme?: ThemeMode;
 }
 
-function readInitialTheme(defaultTheme: ThemeMode): ThemeMode {
+interface ThemeState {
+  theme: ThemeMode;
+  systemTheme: ResolvedTheme;
+}
+
+function bootstrapTheme(defaultTheme: ThemeMode): ThemeState {
   if (typeof window === "undefined") {
-    return defaultTheme;
+    return { theme: defaultTheme, systemTheme: "light" };
   }
 
-  return getStoredOrDefaultTheme(defaultTheme);
+  const theme = getStoredOrDefaultTheme(defaultTheme);
+  const systemTheme = getSystemTheme();
+  applyTheme(resolveTheme(theme, systemTheme));
+
+  return { theme, systemTheme };
 }
 
 export function ThemeProvider({
   children,
   defaultTheme = "system",
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<ThemeMode>(() =>
-    readInitialTheme(defaultTheme),
-  );
-  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(() =>
-    typeof window === "undefined" ? "light" : getSystemTheme(),
+  const [state, setState] = useState<ThemeState>(() =>
+    bootstrapTheme(defaultTheme),
   );
 
   const resolvedTheme = useMemo(
-    () => resolveTheme(theme, systemTheme),
-    [theme, systemTheme],
+    () => resolveTheme(state.theme, state.systemTheme),
+    [state.theme, state.systemTheme],
   );
 
   useLayoutEffect(() => {
@@ -58,8 +64,7 @@ export function ThemeProvider({
       const nextSystemTheme = getSystemTheme();
       const nextResolvedTheme = resolveTheme(mode, nextSystemTheme);
 
-      setThemeState(mode);
-      setSystemTheme(nextSystemTheme);
+      setState({ theme: mode, systemTheme: nextSystemTheme });
       applyTheme(nextResolvedTheme);
     };
 
@@ -70,28 +75,31 @@ export function ThemeProvider({
 
   useLayoutEffect(() => {
     applyTheme(resolvedTheme);
-    storeTheme(theme);
-  }, [resolvedTheme, theme]);
+    storeTheme(state.theme);
+  }, [resolvedTheme, state.theme]);
 
   const setTheme = useCallback((nextTheme: ThemeMode) => {
-    setThemeState(nextTheme);
+    setState((current) => ({ ...current, theme: nextTheme }));
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setThemeState((current) => {
-      const currentResolved = resolveTheme(current, getSystemTheme());
-      return currentResolved === "dark" ? "light" : "dark";
+    setState((current) => {
+      const currentResolved = resolveTheme(current.theme, current.systemTheme);
+      return {
+        ...current,
+        theme: currentResolved === "dark" ? "light" : "dark",
+      };
     });
   }, []);
 
   const value = useMemo<ThemeContextValue>(
     () => ({
-      theme,
+      theme: state.theme,
       resolvedTheme,
       setTheme,
       toggleTheme,
     }),
-    [theme, resolvedTheme, setTheme, toggleTheme],
+    [state.theme, resolvedTheme, setTheme, toggleTheme],
   );
 
   return (

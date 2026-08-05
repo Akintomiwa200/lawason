@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 export default function NotFoundContent() {
   return (
     <section className="relative flex flex-1 items-center justify-center overflow-hidden px-6 py-20">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,var(--spotlight),transparent_70%)]" />
 
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
@@ -39,7 +39,7 @@ export default function NotFoundContent() {
             Contact studio
           </Link>
         </div>
-      </motion.div>
+      </m.div>
     </section>
   );
 }
