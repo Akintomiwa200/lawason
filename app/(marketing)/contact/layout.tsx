@@ -4,7 +4,7 @@ import { company } from "@/lib/company";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Get in touch with ${company.name} for general inquiries, collaborations, and questions.`,
+  description: `Get in touch with ${company.name} — book productions, send inquiries, or visit us in ${company.location}.`,
 };
 
 export default function ContactLayout({

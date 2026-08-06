@@ -15,7 +15,13 @@ export function PageShell({
   hideSpotlight = false,
 }: PageShellProps) {
   return (
-    <div className={cn("relative overflow-hidden", className)}>
+    <div
+      className={cn(
+        "relative",
+        hideSpotlight ? "overflow-visible" : "overflow-hidden",
+        className,
+      )}
+    >
       {hideSpotlight ? null : (
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(ellipse_at_top,var(--spotlight),transparent_65%)]" />
       )}

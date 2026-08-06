@@ -1,6 +1,8 @@
+import { homeImages } from "@/lib/home-images";
+
 const heroImages = {
   main: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=680&h=960&fit=crop&q=80",
-  top: "https://images.unsplash.com/photo-1517602302272-9c5620c43806?w=680&h=440&fit=crop&q=80",
+  top: homeImages.lighting.src,
   bottom: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=680&h=440&fit=crop&q=80",
 };
 
@@ -28,7 +30,7 @@ export function AboutHero() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={heroImages.top}
-                alt="Film lighting equipment"
+                alt={homeImages.lighting.alt}
                 className="h-full w-full object-cover"
               />
             </div>

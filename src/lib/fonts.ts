@@ -1,5 +1,6 @@
 import {
   Bricolage_Grotesque,
+  Cormorant_Garamond,
   DM_Sans,
   JetBrains_Mono,
   Nunito_Sans,
@@ -35,10 +36,18 @@ export const bricolageGrotesque = Bricolage_Grotesque({
   weight: ["400", "500", "600", "700"],
 });
 
+export const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
 export const fontVariables = [
   dmSans.variable,
   jakarta.variable,
   jetbrainsMono.variable,
   nunitoSans.variable,
   bricolageGrotesque.variable,
+  cormorant.variable,
 ].join(" ");

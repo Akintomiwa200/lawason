@@ -1,4 +1,5 @@
 import { company, founder } from "@/lib/company";
+import { homeImages } from "@/lib/home-images";
 
 const blobStyles = [
   "bg-accent/85 rounded-[45%_55%_70%_30%/40%_50%_50%_60%]",
@@ -18,15 +19,13 @@ const team = [
   {
     name: "Lighting & Gaffer Unit",
     role: "On-set specialists",
-    image:
-      "https://images.unsplash.com/photo-1598899134739-24a46c558b88?w=600&h=750&fit=crop&q=80",
+    image: homeImages.lighting.src,
     social: company.social,
   },
   {
     name: "Production Crew",
     role: "Film & camera",
-    image:
-      "https://images.unsplash.com/photo-1574267432550-4b2a248e5720?w=600&h=750&fit=crop&q=80",
+    image: homeImages.crew.src,
     social: company.social,
   },
   {

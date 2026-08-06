@@ -19,6 +19,10 @@ export const homeImages = {
     src: "/images/home/crew.jpg",
     alt: "Production crew on a film shoot",
   },
+  selectedWorkHero: {
+    src: "/images/selected-work/hero-hands.png",
+    alt: "Decorative hands artwork",
+  },
 } as const;
 
 export type HomeImageKey = keyof typeof homeImages;
