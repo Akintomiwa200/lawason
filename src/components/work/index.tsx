@@ -21,3 +21,7 @@ export function WorkPageContent() {
     </>
   );
 }
+
+export { WorkDetail } from "./WorkDetail";
+export { getWorkBySlug, getWorkSlugs, portfolioWorks } from "./data";
+export type { PortfolioWorkDetail, WorkSlug } from "./data";

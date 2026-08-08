@@ -28,7 +28,7 @@ interface WorkCardProps {
 }
 
 export function WorkCard({ work, index }: WorkCardProps) {
-  const href = `/work#${work.slug}`;
+  const href = `/work/${work.slug}`;
 
   return (
     <m.article
