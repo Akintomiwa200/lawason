@@ -1,8 +1,8 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
-import type * as THREE from "three";
+import { useEffect, useMemo, useRef } from "react";
+import { Timer, type Group } from "three";
 
 import { StoryCard } from "./StoryCard";
 import type { RingConfig, SceneTheme, StoryImage } from "./types";
@@ -15,7 +15,10 @@ interface RingProps {
 }
 
 export function Ring({ config, images, paused, theme }: RingProps) {
-  const groupRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<Group>(null);
+  const timer = useMemo(() => new Timer(), []);
+
+  useEffect(() => () => void timer.dispose(), [timer]);
 
   const cards = useMemo(
     () =>
@@ -39,17 +42,19 @@ export function Ring({ config, images, paused, theme }: RingProps) {
     [config, images, theme],
   );
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (!groupRef.current) {
       return;
     }
+
+    timer.update();
 
     if (!paused) {
       groupRef.current.rotation.z -= (delta * Math.PI * 2) / config.rotationDuration;
     }
 
     groupRef.current.position.z =
-      Math.sin(state.clock.elapsedTime * config.floatSpeed) * config.floatAmplitude;
+      Math.sin(timer.getElapsed() * config.floatSpeed) * config.floatAmplitude;
   });
 
   return <group ref={groupRef}>{cards}</group>;

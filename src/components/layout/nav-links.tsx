@@ -3,20 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { mainNav } from "@/lib/navigation";
+import { mainNav, type NavItem } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 interface NavLinksProps {
   className?: string;
   onNavigate?: () => void;
+  extraItems?: NavItem[];
 }
 
-export function NavLinks({ className, onNavigate }: NavLinksProps) {
+export function NavLinks({ className, onNavigate, extraItems = [] }: NavLinksProps) {
   const pathname = usePathname();
+  const items = [...mainNav, ...extraItems];
 
   return (
     <nav className={cn("flex items-center gap-1", className)} aria-label="Main">
-      {mainNav.map((item) => {
+      {items.map((item) => {
         const isHome = item.href === "/";
         const isActive = isHome
           ? pathname === "/"

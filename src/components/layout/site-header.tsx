@@ -7,11 +7,16 @@ import { AnimatePresence, m } from "framer-motion";
 import { NavbarCta } from "@/components/layout/navbar-cta";
 import { NavLinks } from "@/components/layout/nav-links";
 import { company } from "@/lib/company";
-import { mainNav } from "@/lib/navigation";
+import { mainNav, type NavItem } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
-export function SiteHeader() {
+interface SiteHeaderProps {
+  extraNav?: NavItem[];
+}
+
+export function SiteHeader({ extraNav = [] }: SiteHeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const mobileItems = [...mainNav, ...extraNav];
 
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent px-4 pt-4 sm:px-6">
@@ -29,7 +34,7 @@ export function SiteHeader() {
           {company.shortName}
         </Link>
 
-        <NavLinks className="hidden lg:flex" />
+        <NavLinks className="hidden lg:flex" extraItems={extraNav} />
 
         <div className="flex items-center gap-2 pr-1">
           <NavbarCta className="hidden sm:inline-flex" />
@@ -60,7 +65,7 @@ export function SiteHeader() {
             )}
           >
             <div className="flex flex-col gap-1">
-              {mainNav.map((item) => (
+              {mobileItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}

@@ -3,8 +3,14 @@ import { auth, signIn, signOut } from "@/lib/auth";
 export const authService = {
   getSession: () => auth(),
 
-  signInWithGoogle: (callbackUrl = "/") =>
-    signIn("google", { redirectTo: callbackUrl }),
+  signInWithGoogle: (redirectTo = "/") =>
+    signIn("google", { redirectTo }),
 
-  signOut: (callbackUrl = "/") => signOut({ redirectTo: callbackUrl }),
+  signInWithApple: (redirectTo = "/") =>
+    signIn("apple", { redirectTo }),
+
+  signInWithEmail: (email: string, password: string, redirectTo = "/") =>
+    signIn("credentials", { email, password, redirectTo }),
+
+  signOut: (redirectTo = "/") => signOut({ redirectTo }),
 };

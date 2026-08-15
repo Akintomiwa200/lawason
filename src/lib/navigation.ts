@@ -2,8 +2,12 @@ export const mainNav = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Work", href: "/work" },
+  // { label: "Events", href: "/events" },
+  { label: "Watch", href: "/watch" },
   { label: "Contact", href: "/contact" },
 ] as const;
+
+export type NavItem = { label: string; href: string };
 
 export const footerNav = {
   studio: [
@@ -20,6 +24,8 @@ export const footerNav = {
     { label: "Contact", href: "/contact" },
     { label: "Book a Session", href: "/book" },
     { label: "Academy", href: "/about#academy" },
+    { label: "Events & camps", href: "/events" },
+    { label: "Watch", href: "/watch" },
   ],
   resources: [
     { label: "Instagram", href: "https://www.instagram.com/gmlawasonstudios/" },

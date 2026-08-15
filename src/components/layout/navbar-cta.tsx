@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { toast } from "sonner";
+import { signOut, useSession } from "next-auth/react";
 
 import { cn } from "@/lib/utils";
 
@@ -14,18 +13,7 @@ const pillClassName =
   "inline-flex items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground shadow-glow transition hover:brightness-110";
 
 export function NavbarCta({ className }: NavbarCtaProps) {
-  const googleAuthEnabled =
-    process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true";
-
   const { data: session, status } = useSession();
-
-  if (!googleAuthEnabled) {
-    return (
-      <Link href="/book" className={cn(pillClassName, className)}>
-        Book a session
-      </Link>
-    );
-  }
 
   if (status === "loading") {
     return (
@@ -45,13 +33,13 @@ export function NavbarCta({ className }: NavbarCtaProps) {
   if (session?.user) {
     return (
       <div className={cn("flex items-center gap-2", className)}>
-        {session.user.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={session.user.image}
-            alt={session.user.name ?? "User avatar"}
-            className="h-8 w-8 rounded-full border border-border object-cover"
-          />
+        {session.user.role === "ADMIN" ? (
+          <Link
+            href="/admin"
+            className="rounded-full border border-border px-3 py-2 text-sm font-medium text-foreground hover:border-accent hover:text-accent"
+          >
+            Admin
+          </Link>
         ) : null}
         <button
           type="button"
@@ -65,16 +53,8 @@ export function NavbarCta({ className }: NavbarCtaProps) {
   }
 
   return (
-    <button
-      type="button"
-      onClick={() => {
-        signIn("google", { redirectTo: "/" }).catch(() => {
-          toast.error("Sign in failed. Check Google OAuth configuration.");
-        });
-      }}
-      className={cn(pillClassName, className)}
-    >
+    <Link href="/login" className={cn(pillClassName, className)}>
       Sign in
-    </button>
+    </Link>
   );
 }

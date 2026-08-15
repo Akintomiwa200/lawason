@@ -1,6 +1,4 @@
-export function isGoogleAuthConfigured() {
-  return Boolean(
-    process.env.GOOGLE_CLIENT_ID?.trim() &&
-      process.env.GOOGLE_CLIENT_SECRET?.trim(),
-  );
-}
+export {
+  isAppleAuthConfigured,
+  isGoogleAuthConfigured,
+} from "@/lib/env";

@@ -1,0 +1,266 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum PageStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum EventType {
+  CAMP
+  WORKSHOP
+  MASTERCLASS
+  OTHER
+}
+
+enum EventStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  COMPLETED
+}
+
+enum RegistrationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum EventFormat {
+  IN_PERSON
+  ONLINE_APP
+  ZOOM
+  GOOGLE_MEET
+  HYBRID
+}
+
+enum PaymentMethod {
+  NONE
+  BANK_TRANSFER
+  PAYMENT_LINK
+  PAYSTACK
+}
+
+enum PaymentStatus {
+  NOT_REQUIRED
+  UNPAID
+  SUBMITTED
+  PAID
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          Role      @default(USER)
+  location      String?
+  bio           String?
+  facebook      String?
+  twitter       String?
+  linkedin      String?
+  instagram     String?
+  education     Json?
+  jobs          Json?
+  skills        Json?
+  interestTags  Json?
+  accounts      Account[]
+  sessions      Session[]
+  pages         Page[]    @relation("PageAuthor")
+  registrations EventRegistration[]
+  eventInterests EventInterest[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Page {
+  id             String     @id @default(cuid())
+  slug           String     @unique
+  title          String
+  excerpt        String?
+  coverImage     String?
+  content        Json
+  status         PageStatus @default(DRAFT)
+  showInNav      Boolean    @default(false)
+  seoTitle       String?
+  seoDescription String?
+  authorId       String?
+  author         User?      @relation("PageAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  publishedAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([status, showInNav])
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  publicId  String   @unique
+  url       String
+  width     Int?
+  height    Int?
+  format    String?
+  bytes     Int?
+  alt       String?
+  folder    String?
+  createdAt DateTime @default(now())
+}
+
+model Event {
+  id            String              @id @default(cuid())
+  slug          String              @unique
+  title         String
+  description   String              @db.Text
+  type          EventType           @default(CAMP)
+  category      String?
+  organizer     String?
+  status        EventStatus         @default(DRAFT)
+  location      String?
+  format        EventFormat         @default(IN_PERSON)
+  meetingUrl    String?
+  meetingId     String?
+  meetingPasscode String?
+  streamUrl     String?
+  timezone      String              @default("Africa/Lagos")
+  startDate     DateTime
+  endDate       DateTime?
+  capacity      Int?
+  coverImage    String?
+  priceLabel    String?
+  requiresPayment Boolean          @default(false)
+  priceAmount   Int?
+  currency      String             @default("NGN")
+  paymentMethod PaymentMethod      @default(NONE)
+  paymentLink   String?
+  paymentInstructions String?      @db.Text
+  outline       String?            @db.Text
+  audience      String?            @db.Text
+  includes      String?            @db.Text
+  scheduleNotes String?            @db.Text
+  requireLogin  Boolean            @default(false)
+  collectPhone  Boolean            @default(true)
+  collectNotes  Boolean            @default(true)
+  collectCity   Boolean            @default(true)
+  collectEmergency Boolean         @default(true)
+  collectExperience Boolean        @default(true)
+  collectPortfolio Boolean         @default(true)
+  collectGuardian Boolean          @default(false)
+  confirmationMessage String?      @db.Text
+  registrations EventRegistration[]
+  interests     EventInterest[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@index([status, startDate])
+}
+
+model EventInterest {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
+  @@index([userId])
+}
+
+model EventRegistration {
+  id        String             @id @default(cuid())
+  eventId   String
+  event     Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name      String
+  email     String
+  phone     String?
+  notes     String?            @db.Text
+  details   Json?
+  status    RegistrationStatus @default(PENDING)
+  paymentStatus PaymentStatus  @default(NOT_REQUIRED)
+  paymentReference String?
+  paymentProvider String?
+  paidAt    DateTime?
+  createdAt DateTime           @default(now())
+
+  @@index([eventId, email])
+}
+
+model YoutubePlaylist {
+  id          String         @id @default(cuid())
+  youtubeId   String         @unique
+  title       String
+  description String?        @db.Text
+  thumbnail   String?
+  itemCount   Int            @default(0)
+  videos      YoutubeVideo[]
+  syncedAt    DateTime       @default(now())
+}
+
+model YoutubeVideo {
+  id          String           @id @default(cuid())
+  youtubeId   String           @unique
+  title       String
+  description String?          @db.Text
+  thumbnail   String?
+  publishedAt DateTime?
+  playlistId  String?
+  playlist    YoutubePlaylist? @relation(fields: [playlistId], references: [id], onDelete: SetNull)
+  syncedAt    DateTime         @default(now())
+
+  @@index([playlistId, publishedAt])
+}
+
+model SiteSetting {
+  key   String @id
+  value String @db.Text
+}
