@@ -18,7 +18,7 @@ export async function initializePaystack(input: {
   amount: number;
   currency?: string;
   reference: string;
-  callbackUrl: string;
+  returnUrl: string;
   metadata: Record<string, string>;
 }) {
   const secret = process.env.PAYSTACK_SECRET_KEY?.trim();
@@ -26,20 +26,22 @@ export async function initializePaystack(input: {
     throw new Error("Paystack is not configured");
   }
 
+  const body: Record<string, unknown> = {
+    email: input.email,
+    amount: toPaystackAmount(input.amount, input.currency),
+    currency: input.currency ?? "NGN",
+    reference: input.reference,
+    metadata: input.metadata,
+  };
+  body["callback_url"] = input.returnUrl;
+
   const response = await fetch("https://api.paystack.co/transaction/initialize", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${secret}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      email: input.email,
-      amount: toPaystackAmount(input.amount, input.currency),
-      currency: input.currency ?? "NGN",
-      reference: input.reference,
-      callback_url: input.callbackUrl,
-      metadata: input.metadata,
-    }),
+    body: JSON.stringify(body),
   });
 
   const payload = (await response.json()) as {

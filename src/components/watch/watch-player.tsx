@@ -70,7 +70,13 @@ export function WatchPlayer({
                 >
                   <div className="relative h-20 w-32 shrink-0 overflow-hidden rounded-xl bg-surface-elevated">
                     {item.thumbnail ? (
-                      <Image src={item.thumbnail} alt={item.title} fill className="object-cover" />
+                      <Image
+                        src={item.thumbnail}
+                        alt={item.title}
+                        fill
+                        sizes="128px"
+                        className="object-cover"
+                      />
                     ) : null}
                   </div>
                   <p className="pt-1 text-sm font-medium leading-snug text-foreground">{item.title}</p>

@@ -101,12 +101,12 @@ export const watchSamples: WatchPlaylist[] = [
     youtubeId: "on-set",
     title: "On Set",
     description: "BTS from studio days — camera, grip, and lighting moving as one department.",
-    thumbnail: youtubeThumb("uYZt4jXFbK8"),
+    thumbnail: youtubeThumb("eRsGyueVLvQ"),
     itemCount: 4,
     videos: [
       video(
         "on-set",
-        "uYZt4jXFbK8",
+        "eRsGyueVLvQ",
         "Call time to first shot",
         "A compressed morning: pre-light, safety, and the first rehearsal.",
         "2026-05-01T09:00:00.000Z",
@@ -165,7 +165,7 @@ export const watchSamples: WatchPlaylist[] = [
       ),
       video(
         "academy-shorts",
-        "D0q0QeQspMY",
+        "ScMzIvxBSi4",
         "What to bring on day one",
         "Gloves, layers, and how to stand where you are useful.",
         "2026-02-25T11:00:00.000Z",

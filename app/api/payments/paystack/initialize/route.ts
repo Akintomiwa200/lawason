@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     amount: event.priceAmount,
     currency: event.currency,
     reference,
-    callbackUrl: `${getAppUrl()}/api/payments/paystack/callback`,
+    returnUrl: `${getAppUrl()}/api/payments/paystack/return`,
     metadata: {
       eventSlug: event.slug,
       registrationId: registration.id,

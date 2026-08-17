@@ -17,9 +17,11 @@ function formatDate(value?: string | null) {
 export function WatchVideoCard({
   video,
   playlistId,
+  priority = false,
 }: {
   video: WatchVideo;
   playlistId: string;
+  priority?: boolean;
 }) {
   const date = formatDate(video.publishedAt);
 
@@ -34,6 +36,8 @@ export function WatchVideoCard({
             src={video.thumbnail}
             alt={video.title}
             fill
+            priority={priority}
+            loading={priority ? "eager" : undefined}
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className="object-cover transition duration-500 group-hover:scale-105"
           />

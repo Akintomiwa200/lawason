@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { WatchHero } from "@/components/watch/watch-hero";
@@ -28,12 +27,15 @@ export default async function WatchPage() {
           >
             <div className="relative aspect-video bg-surface-elevated lg:aspect-auto lg:min-h-[22rem]">
               {featured.thumbnail ? (
-                <Image
+                <img
                   src={featured.thumbnail}
                   alt={featured.title}
-                  fill
-                  priority
-                  className="object-cover transition duration-500 group-hover:scale-105"
+                  width={1280}
+                  height={720}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 />
               ) : null}
               <span className="absolute inset-0 flex items-center justify-center">
@@ -74,7 +76,15 @@ export default async function WatchPage() {
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {playlist.videos.slice(0, 4).map((video) => (
-                  <WatchVideoCard key={video.id} video={video} playlistId={playlist.youtubeId} />
+                  <WatchVideoCard
+                    key={video.id}
+                    video={video}
+                    playlistId={playlist.youtubeId}
+                    priority={
+                      featured?.youtubeId === video.youtubeId &&
+                      featuredSeries?.youtubeId === playlist.youtubeId
+                    }
+                  />
                 ))}
               </div>
             </section>
