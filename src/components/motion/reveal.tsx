@@ -1,7 +1,7 @@
 "use client";
 
 import { m } from "framer-motion";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -65,9 +65,10 @@ export function RevealStagger({
 interface RevealItemProps {
   children: ReactNode;
   className?: string;
+  style?: CSSProperties;
 }
 
-export function RevealItem({ children, className }: RevealItemProps) {
+export function RevealItem({ children, className, style }: RevealItemProps) {
   return (
     <m.div
       variants={{
@@ -79,6 +80,7 @@ export function RevealItem({ children, className }: RevealItemProps) {
         },
       }}
       className={cn(className)}
+      style={style}
     >
       {children}
     </m.div>

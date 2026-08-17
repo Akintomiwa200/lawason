@@ -2,42 +2,38 @@
 
 import Image from "next/image";
 
-import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal";
+import { Reveal } from "@/components/motion/reveal";
 import { homeImages } from "@/lib/home-images";
-import { cn } from "@/lib/utils";
 
-const galleryItems = [
-  {
-    id: "lighting",
-    ...homeImages.lighting,
-    className:
-      "left-0 top-[18%] z-[1] h-[4.75rem] w-[7.25rem] sm:h-[5.75rem] sm:w-[8.75rem] md:h-[7.25rem] md:w-[11rem]",
-  },
-  {
-    id: "cinematographer",
-    ...homeImages.cinematographer,
-    className:
-      "bottom-[2%] left-[7%] z-[2] h-[8rem] w-[5rem] sm:bottom-[4%] sm:left-[9%] sm:h-[10rem] sm:w-[6.25rem] md:h-[12.5rem] md:w-[7.75rem]",
-  },
-  {
-    id: "portrait",
-    ...homeImages.portrait,
-    className:
-      "left-1/2 top-[2%] z-[5] h-[11.5rem] w-[8.75rem] -translate-x-1/2 sm:h-[14.25rem] sm:w-[10.75rem] md:h-[18rem] md:w-[13.5rem]",
-  },
-  {
-    id: "director",
-    ...homeImages.director,
-    className:
-      "top-0 right-[9%] z-[3] h-[7.5rem] w-[4.75rem] sm:right-[11%] sm:h-[9.25rem] sm:w-[5.75rem] md:h-[11.5rem] md:w-[7.25rem]",
-  },
-  {
-    id: "crew",
-    ...homeImages.crew,
-    className:
-      "right-0 bottom-[4%] z-[2] h-[4.75rem] w-[7.75rem] sm:h-[5.75rem] sm:w-[9.5rem] md:h-[7.25rem] md:w-[11.75rem]",
-  },
-] as const;
+function GalleryFrame({
+  src,
+  alt,
+  sizes,
+  ratio,
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  sizes: string;
+  ratio: string;
+  priority?: boolean;
+}) {
+  return (
+    <div
+      className="relative w-full overflow-hidden rounded-sm"
+      style={{ aspectRatio: ratio }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        className="object-cover object-center"
+        priority={priority}
+      />
+    </div>
+  );
+}
 
 export function SpecializingSection() {
   return (
@@ -53,23 +49,37 @@ export function SpecializingSection() {
         </h2>
       </Reveal>
 
-      <RevealStagger className="relative mx-auto mt-14 h-[17.5rem] w-full max-w-[34rem] sm:mt-16 sm:h-[21rem] sm:max-w-[38rem] md:mt-20 md:h-[26rem] md:max-w-[42rem]">
-        {galleryItems.map((item, index) => (
-          <RevealItem
-            key={item.id}
-            className={cn("absolute overflow-hidden rounded-sm", item.className)}
-          >
-            <Image
-              src={item.src}
-              alt={item.alt}
-              fill
-              sizes="(max-width: 640px) 120px, (max-width: 768px) 160px, 220px"
-              className="object-cover"
-              priority={index === 2}
+      <Reveal className="mx-auto mt-14 w-full max-w-5xl sm:mt-16 md:mt-20">
+        <div className="grid gap-4 sm:gap-5 md:gap-6">
+          <GalleryFrame
+            src={homeImages.portrait.src}
+            alt={homeImages.portrait.alt}
+            ratio="16 / 6"
+            sizes="(max-width: 1024px) 100vw, 64rem"
+            priority
+          />
+          <div className="grid grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+            <GalleryFrame
+              src={homeImages.lighting.src}
+              alt={homeImages.lighting.alt}
+              ratio="16 / 10"
+              sizes="(max-width: 1024px) 50vw, 32rem"
             />
-          </RevealItem>
-        ))}
-      </RevealStagger>
+            <GalleryFrame
+              src={homeImages.cinematographer.src}
+              alt={homeImages.cinematographer.alt}
+              ratio="16 / 10"
+              sizes="(max-width: 1024px) 50vw, 32rem"
+            />
+          </div>
+          <GalleryFrame
+            src={homeImages.crew.src}
+            alt={homeImages.crew.alt}
+            ratio="16 / 6"
+            sizes="(max-width: 1024px) 100vw, 64rem"
+          />
+        </div>
+      </Reveal>
     </section>
   );
 }
