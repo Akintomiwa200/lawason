@@ -69,11 +69,11 @@ export function ContactFormSection() {
     <section className="relative overflow-hidden pb-28 pt-28 md:pb-36 md:pt-32">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#ecfdf5_0%,#f8fafc_55%,#ffffff_100%)] dark:bg-[linear-gradient(180deg,#052e16_0%,#0a0a0a_55%,#0a0a0a_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#fae8ff_0%,#f8fafc_55%,#ffffff_100%)] dark:bg-[linear-gradient(180deg,#4a044e_0%,#0a0a0a_55%,#0a0a0a_100%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:linear-gradient(to_right,rgba(22,163,74,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(22,163,74,0.06)_1px,transparent_1px)] [background-size:48px_48px] dark:opacity-[0.12]"
+        className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:linear-gradient(to_right,rgba(192,38,211,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(192,38,211,0.06)_1px,transparent_1px)] [background-size:48px_48px] dark:opacity-[0.12]"
       />
 
       <div className="relative mx-auto w-full max-w-3xl px-6 text-center">
@@ -198,7 +198,7 @@ export function ContactFormSection() {
 
           <button
             type="submit"
-            className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-[0_10px_30px_rgba(22,163,74,0.25)] transition hover:brightness-110"
+            className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-[0_10px_30px_rgba(192,38,211,0.25)] transition hover:brightness-110"
           >
             Send message
           </button>

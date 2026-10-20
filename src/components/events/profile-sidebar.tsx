@@ -67,7 +67,7 @@ export function ProfileSidebar({
         </p>
         <Link
           href={loginHref("/events")}
-          className="mt-5 inline-flex rounded-full bg-[#16a34a] px-4 py-2 text-sm font-semibold text-white"
+          className="mt-5 inline-flex rounded-full bg-[#c026d3] px-4 py-2 text-sm font-semibold text-white"
         >
           Sign in
         </Link>

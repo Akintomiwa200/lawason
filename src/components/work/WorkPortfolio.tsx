@@ -8,7 +8,12 @@ export function WorkPortfolio() {
   return (
     <div className="mt-[110px] grid grid-cols-1 gap-9 md:grid-cols-2">
       {portfolioWorks.map((work, index) => (
-        <WorkCard key={work.id} work={work} index={index} />
+        <WorkCard
+          key={work.id}
+          work={work}
+          index={index}
+          priority={index < 2}
+        />
       ))}
     </div>
   );

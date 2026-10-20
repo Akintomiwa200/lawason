@@ -25,9 +25,10 @@ function ArrowUpRightIcon({ className }: { className?: string }) {
 interface WorkCardProps {
   work: WorkItem;
   index: number;
+  priority?: boolean;
 }
 
-export function WorkCard({ work, index }: WorkCardProps) {
+export function WorkCard({ work, index, priority = false }: WorkCardProps) {
   const href = `/work/${work.slug}`;
 
   return (
@@ -48,6 +49,8 @@ export function WorkCard({ work, index }: WorkCardProps) {
             src={work.image}
             alt={work.imageAlt}
             fill
+            priority={priority}
+            loading={priority ? "eager" : undefined}
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover brightness-[0.98] contrast-[1.05] transition-transform duration-700 ease-out group-hover:scale-105"
           />

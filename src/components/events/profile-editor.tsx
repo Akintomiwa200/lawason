@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import type { EducationItem, JobItem, ProfilePayload } from "@/types/events";
 
 const fieldClass =
-  "w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus:border-[#16a34a]";
+  "w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus:border-[#c026d3]";
 
 function splitTags(value: string) {
   return value
@@ -128,7 +128,7 @@ export function ProfileEditor({
         ))}
         <button
           type="button"
-          className="mt-2 text-xs font-semibold text-[#16a34a]"
+          className="mt-2 text-xs font-semibold text-[#c026d3]"
           onClick={() => setEducation((current) => [...current, { school: "", degree: "", dates: "" }])}
         >
           Add education
@@ -177,7 +177,7 @@ export function ProfileEditor({
         ))}
         <button
           type="button"
-          className="mt-2 text-xs font-semibold text-[#16a34a]"
+          className="mt-2 text-xs font-semibold text-[#c026d3]"
           onClick={() => setJobs((current) => [...current, { title: "", company: "", dates: "" }])}
         >
           Add role
@@ -201,7 +201,7 @@ export function ProfileEditor({
         <button
           type="submit"
           disabled={saving}
-          className="mt-6 w-full rounded-full bg-[#16a34a] px-4 py-2.5 text-sm font-semibold text-white"
+          className="mt-6 w-full rounded-full bg-[#c026d3] px-4 py-2.5 text-sm font-semibold text-white"
         >
           {saving ? "Saving…" : "Save profile"}
         </button>

@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-const plate = "#16a34a";
+const plate = "#c026d3";
 const lampBody = "#0a0a0a";
 const lampCore = "#ffffff";
 

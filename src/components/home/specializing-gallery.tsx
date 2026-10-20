@@ -30,6 +30,7 @@ function GalleryFrame({
         sizes={sizes}
         className="object-cover object-center"
         priority={priority}
+        loading={priority ? "eager" : undefined}
       />
     </div>
   );
@@ -77,6 +78,7 @@ export function SpecializingSection() {
             alt={homeImages.crew.alt}
             ratio="16 / 6"
             sizes="(max-width: 1024px) 100vw, 64rem"
+            priority
           />
         </div>
       </Reveal>

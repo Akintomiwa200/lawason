@@ -7,17 +7,17 @@
 .light {
   --scrollbar-size: 6px;
   --scrollbar-track: transparent;
-  --scrollbar-thumb: #16a34a;
-  --scrollbar-thumb-hover: #15803d;
+  --scrollbar-thumb: #c026d3;
+  --scrollbar-thumb-hover: #a21caf;
   --scrollbar-thumb-idle: transparent;
-  --scrollbar-thumb-active: rgba(22, 163, 74, 0.85);
+  --scrollbar-thumb-active: rgba(192, 38, 211, 0.85);
   --scrollbar-hide-delay: 900ms;
 }
 
 .dark {
-  --scrollbar-thumb: #22c55e;
-  --scrollbar-thumb-hover: #4ade80;
-  --scrollbar-thumb-active: rgba(74, 222, 128, 0.9);
+  --scrollbar-thumb: #e879f9;
+  --scrollbar-thumb-hover: #f0abfc;
+  --scrollbar-thumb-active: rgba(232, 121, 249, 0.9);
 }
 
 /* Firefox */

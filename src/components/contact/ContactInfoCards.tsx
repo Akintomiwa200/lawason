@@ -20,7 +20,7 @@ export function ContactInfoCards() {
             {...wrapperProps}
             className={cn(
               "group rounded-2xl border border-border bg-surface p-5 transition duration-300",
-              "hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_12px_32px_rgba(22,163,74,0.08)]",
+              "hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_12px_32px_rgba(192,38,211,0.08)]",
             )}
           >
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">

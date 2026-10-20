@@ -44,14 +44,14 @@ function resolveDottedMapConstructor(mod: unknown): DottedMapConstructor {
 }
 
 const TEAM_LOCATIONS = [
-  { lat: 6.6018, lng: 3.3515, color: "#16a34a" },
+  { lat: 6.6018, lng: 3.3515, color: "#c026d3" },
   { lat: 6.5244, lng: 3.3792, color: "#0a0a0a" },
-  { lat: 9.0765, lng: 7.3986, color: "#16a34a" },
-  { lat: 4.8156, lng: 7.0498, color: "#22c55e" },
-  { lat: 5.6037, lng: -0.187, color: "#16a34a" },
-  { lat: 6.1366, lng: 1.2224, color: "#22c55e" },
+  { lat: 9.0765, lng: 7.3986, color: "#c026d3" },
+  { lat: 4.8156, lng: 7.0498, color: "#e879f9" },
+  { lat: 5.6037, lng: -0.187, color: "#c026d3" },
+  { lat: 6.1366, lng: 1.2224, color: "#e879f9" },
   { lat: 25.2048, lng: 55.2708, color: "#0a0a0a" },
-  { lat: 51.5074, lng: -0.1278, color: "#16a34a" },
+  { lat: 51.5074, lng: -0.1278, color: "#c026d3" },
 ];
 
 function buildMapSvg(DottedMap: DottedMapConstructor, dotColor: string) {
