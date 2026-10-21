@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { z } from "zod";
 
-import { consumePasswordResetToken } from "@/lib/auth-tokens";
+import { consumeVerifiedResetToken } from "@/lib/auth-tokens";
 import { prisma } from "@/lib/db";
 import { isDatabaseConfigured } from "@/lib/env";
 
 const schema = z.object({
-  token: z.string().min(1),
+  ticket: z.string().min(1),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
@@ -29,11 +29,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const user = await consumePasswordResetToken(parsed.data.token);
+  const user = await consumeVerifiedResetToken(parsed.data.ticket);
 
   if (!user) {
     return NextResponse.json(
-      { error: "This reset link is invalid or has expired" },
+      { error: "Your verification session has expired. Please start again." },
       { status: 400 },
     );
   }

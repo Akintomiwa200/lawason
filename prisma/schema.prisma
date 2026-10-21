@@ -123,13 +123,16 @@ model VerificationToken {
 }
 
 model PasswordResetToken {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  token     String   @unique
-  expires   DateTime
-  usedAt    DateTime?
-  createdAt DateTime @default(now())
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token      String    @unique
+  codeHash   String
+  attempts   Int       @default(0)
+  verifiedAt DateTime?
+  expires    DateTime
+  usedAt     DateTime?
+  createdAt  DateTime  @default(now())
 
   @@index([userId])
 }

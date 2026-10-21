@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { PasswordField } from "@/components/auth/password-field";
 import { cn } from "@/lib/utils";
 
-export function ResetPasswordForm({ token }: { token: string }) {
+export function ResetPasswordForm({ ticket }: { ticket: string }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState(false);
@@ -27,7 +27,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
       const response = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, password }),
+        body: JSON.stringify({ ticket, password }),
       });
 
       const payload = (await response.json()) as { error?: string };

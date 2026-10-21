@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { createEmailVerificationToken } from "@/lib/auth-tokens";
 import { prisma } from "@/lib/db";
+import { verifyEmailEmail, welcomeEmail } from "@/lib/email";
 import { getAdminEmail, isDatabaseConfigured } from "@/lib/env";
 import { buildActionUrl, isEmailDeliveryConfigured, sendEmail } from "@/lib/mailer";
 
@@ -56,14 +57,13 @@ export async function POST(request: Request) {
   const token = await createEmailVerificationToken(email);
   let verificationUrl: string | undefined;
 
+  const welcome = welcomeEmail(parsed.data.name);
+  await sendEmail({ to: email, ...welcome });
+
   if (token) {
     verificationUrl = buildActionUrl("/verify-email", token, email);
-    await sendEmail({
-      to: email,
-      subject: "Verify your GM Lawason email",
-      text: `Welcome to GM Lawason Studios. Confirm your email using this link (valid for 24 hours): ${verificationUrl}`,
-      url: verificationUrl,
-    });
+    const message = verifyEmailEmail(verificationUrl, parsed.data.name);
+    await sendEmail({ to: email, ...message });
   }
 
   return NextResponse.json({

@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { createPasswordResetToken } from "@/lib/auth-tokens";
+import { createPasswordResetOtp } from "@/lib/auth-tokens";
 import { prisma } from "@/lib/db";
+import { passwordResetCodeEmail } from "@/lib/email";
 import { isDatabaseConfigured } from "@/lib/env";
-import { buildActionUrl, isEmailDeliveryConfigured, sendEmail } from "@/lib/mailer";
+import { isEmailDeliveryConfigured, sendEmail } from "@/lib/mailer";
 
 const schema = z.object({
   email: z.email(),
@@ -36,22 +37,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const token = await createPasswordResetToken(user.id);
+  const otp = await createPasswordResetOtp(user.id);
 
-  if (!token) {
+  if (!otp) {
     return NextResponse.json({ ok: true });
   }
 
-  const url = buildActionUrl("/reset-password", token);
-  await sendEmail({
-    to: email,
-    subject: "Reset your GM Lawason password",
-    text: `Reset your password using this link (valid for 1 hour): ${url}`,
-    url,
-  });
+  const message = passwordResetCodeEmail(otp.code);
+  const { delivered } = await sendEmail({ to: email, ...message });
 
   return NextResponse.json({
     ok: true,
-    url: isEmailDeliveryConfigured() ? undefined : url,
+    token: otp.token,
+    // Only surface the code when email delivery is unavailable (development).
+    devCode: delivered ? undefined : otp.code,
+    emailDelivery: isEmailDeliveryConfigured(),
   });
 }

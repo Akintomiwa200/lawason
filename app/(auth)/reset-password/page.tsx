@@ -12,20 +12,22 @@ export const metadata = {
   title: "Reset password",
 };
 
-async function isValidToken(token: string) {
-  if (!isDatabaseConfigured() || !token) {
+async function isVerifiedTicket(ticket: string) {
+  if (!isDatabaseConfigured() || !ticket) {
     return false;
   }
 
-  const record = await prisma.passwordResetToken.findUnique({ where: { token } });
+  const record = await prisma.passwordResetToken.findUnique({ where: { token: ticket } });
 
-  return Boolean(record && !record.usedAt && record.expires > new Date());
+  return Boolean(
+    record && !record.usedAt && record.verifiedAt && record.expires > new Date(),
+  );
 }
 
 export default async function ResetPasswordPage({
   searchParams,
 }: {
-  searchParams: Promise<{ token?: string }>;
+  searchParams: Promise<{ ticket?: string }>;
 }) {
   const [session, params] = await Promise.all([auth(), searchParams]);
 
@@ -33,22 +35,22 @@ export default async function ResetPasswordPage({
     redirect("/");
   }
 
-  const token = params.token ?? "";
-  const valid = await isValidToken(token);
+  const ticket = params.ticket ?? "";
+  const valid = await isVerifiedTicket(ticket);
 
   if (!valid) {
     return (
       <AuthCard
         eyebrow="GM Lawason"
-        title="Reset link expired"
-        description="This password reset link is invalid or has already been used. Request a new one to continue."
+        title="Session expired"
+        description="Your verification session is no longer valid. Start again to reset your password."
         footer={
           <p className="text-center text-sm text-muted">
             <Link
               href="/forgot-password"
               className="font-medium text-accent hover:underline"
             >
-              Request a new link
+              Start over
             </Link>
           </p>
         }
@@ -69,7 +71,7 @@ export default async function ResetPasswordPage({
       title="Set a new password"
       description="Choose a strong password you haven't used before. You'll use it to sign in from now on."
     >
-      <ResetPasswordForm token={token} />
+      <ResetPasswordForm ticket={ticket} />
     </AuthCard>
   );
 }

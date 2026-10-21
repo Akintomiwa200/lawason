@@ -1,43 +1,76 @@
+import nodemailer, { type Transporter } from "nodemailer";
+
+import type { EmailContent } from "@/lib/email";
 import { getAppUrl } from "@/lib/utils";
 
+const SMTP_HOST = process.env.SMTP_HOST?.trim();
+const SMTP_PORT = Number(process.env.SMTP_PORT ?? "587");
+const SMTP_USER = process.env.SMTP_USER?.trim();
+const SMTP_PASSWORD = process.env.SMTP_PASSWORD?.trim();
+const MAIL_FROM =
+  process.env.MAIL_FROM?.trim() ?? `GM Lawason Studios <${SMTP_USER ?? "no-reply@gmlawason.com"}>`;
+
 export function isEmailDeliveryConfigured() {
-  return Boolean(process.env.SMTP_URL?.trim() || process.env.RESEND_API_KEY?.trim());
+  return Boolean(SMTP_HOST && SMTP_USER && SMTP_PASSWORD);
 }
 
-interface SendEmailInput {
+let transporter: Transporter | null = null;
+
+function getTransporter() {
+  if (!isEmailDeliveryConfigured()) {
+    return null;
+  }
+
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_PORT === 465,
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASSWORD,
+      },
+    });
+  }
+
+  return transporter;
+}
+
+interface SendEmailInput extends EmailContent {
   to: string;
-  subject: string;
-  text: string;
-  url?: string;
 }
 
 interface SendEmailResult {
   delivered: boolean;
 }
 
-/**
- * Sends a transactional email. When no mail provider is configured, the
- * message is logged and marked as not delivered so callers can surface the
- * action link in development instead of silently dropping it.
- */
 export async function sendEmail({
   to,
   subject,
   text,
-  url,
+  html,
 }: SendEmailInput): Promise<SendEmailResult> {
-  const preview = url ? ` — link: ${url}` : text ? ` — ${text}` : "";
-
   if (!isEmailDeliveryConfigured()) {
     console.info(
-      `[mailer] No email provider configured. Would send "${subject}" to ${to}${preview}`,
+      `[mailer] No SMTP configured. Would send "${subject}" to ${to} — ${text}`,
     );
     return { delivered: false };
   }
 
-  // Provider integration point. Wire SMTP or a transactional API here.
-  console.info(`[mailer] Sending "${subject}" to ${to}${preview}`);
-  return { delivered: true };
+  try {
+    const mailer = getTransporter();
+    await mailer?.sendMail({
+      from: MAIL_FROM,
+      to,
+      subject,
+      text,
+      html,
+    });
+    return { delivered: true };
+  } catch (error) {
+    console.error("[mailer] Failed to send email", error);
+    return { delivered: false };
+  }
 }
 
 export function buildActionUrl(path: string, token: string, extra?: string) {
