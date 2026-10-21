@@ -1,53 +1,54 @@
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
+import { AdminMobileNav, AdminSidebarContent } from "@/components/admin/admin-nav";
+import { AdminUserMenu } from "@/components/admin/admin-user-menu";
+import { auth } from "@/lib/auth";
 
-const nav = [
-  { href: "/admin", label: "Overview" },
-  { href: "/admin/pages", label: "Pages" },
-  { href: "/admin/events", label: "Events" },
-  { href: "/admin/registrations", label: "Registrations" },
-  { href: "/admin/videos", label: "YouTube" },
-  { href: "/admin/media", label: "Media" },
-];
-
-export function AdminShell({
+export async function AdminShell({
   children,
   title,
+  description,
   action,
 }: {
   children: React.ReactNode;
   title: string;
+  description?: string;
   action?: React.ReactNode;
 }) {
+  const session = await auth();
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto flex w-full max-w-6xl gap-8 px-6 py-10">
-        <aside className="hidden w-52 shrink-0 md:block">
-          <Link href="/" className="font-display text-lg font-semibold text-accent">
-            GMLawason
-          </Link>
-          <p className="mt-1 text-xs uppercase tracking-[0.2em] text-muted">Admin</p>
-          <nav className="mt-8 space-y-1">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block rounded-xl px-3 py-2 text-sm text-muted transition hover:bg-accent/10 hover:text-accent"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+      <div className="mx-auto flex w-full max-w-6xl gap-10 px-6 py-8 md:py-10">
+        <aside className="sticky top-10 hidden h-[calc(100vh-5rem)] w-52 shrink-0 self-start overflow-y-auto md:block">
+          <AdminSidebarContent />
         </aside>
+
         <div className="min-w-0 flex-1">
-          <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-            <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground">
-              {title}
-            </h1>
-            {action}
+          <AdminMobileNav />
+
+          <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+            <div className="min-w-0">
+              <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground">
+                {title}
+              </h1>
+              {description ? (
+                <p className="mt-1.5 text-sm text-muted">{description}</p>
+              ) : null}
+            </div>
+            <div className="flex items-center gap-3">
+              {action}
+              <AdminUserMenu fallbackName={session?.user?.name} />
+            </div>
           </div>
-          <div className={cn("space-y-6")}>{children}</div>
+
+          <div className="space-y-6">{children}</div>
+
+          <p className="mt-12 text-xs text-muted">
+            <Link href="/" className="transition hover:text-accent">
+              ← Back to GMLawason
+            </Link>
+          </p>
         </div>
       </div>
     </div>

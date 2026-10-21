@@ -6,6 +6,9 @@ import Credentials from "next-auth/providers/credentials";
 import { authConfig } from "@/lib/auth.config";
 import { prisma } from "@/lib/db";
 import { getAdminEmail, isDatabaseConfigured } from "@/lib/env";
+import { verifySuperAdmin } from "@/lib/super-admin";
+
+export const SUPER_ADMIN_ID = "super-admin";
 
 async function promoteAdmin(email?: string | null, userId?: string) {
   if (!email || !isDatabaseConfigured()) {
@@ -29,6 +32,32 @@ async function promoteAdmin(email?: string | null, userId?: string) {
     data: { role: "ADMIN" },
   });
 }
+
+const superAdminProvider = Credentials({
+  id: "super-admin",
+  name: "Super Admin",
+  credentials: {
+    username: { label: "Username", type: "text" },
+    password: { label: "Password", type: "password" },
+  },
+  async authorize(credentials) {
+    const identity = verifySuperAdmin(
+      credentials?.username as string | undefined,
+      credentials?.password as string | undefined,
+    );
+
+    if (!identity) {
+      return null;
+    }
+
+    return {
+      id: identity.id,
+      name: "Super Admin",
+      email: identity.email,
+      role: "ADMIN" as const,
+    };
+  },
+});
 
 const credentialsProvider = Credentials({
   name: "Email",
@@ -75,7 +104,7 @@ const credentialsProvider = Credentials({
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
   adapter: isDatabaseConfigured() ? PrismaAdapter(prisma) : undefined,
-  providers: [...authConfig.providers, credentialsProvider],
+  providers: [...authConfig.providers, superAdminProvider, credentialsProvider],
   events: {
     async createUser({ user }) {
       await promoteAdmin(user.email, user.id);
@@ -87,6 +116,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.role = user.role === "ADMIN" ? "ADMIN" : "USER";
+
+        // The built-in super admin is not a database row — never look it up.
+        if (user.id === SUPER_ADMIN_ID) {
+          token.role = "ADMIN";
+          return token;
+        }
 
         if (isDatabaseConfigured() && user.email) {
           await promoteAdmin(user.email, user.id);

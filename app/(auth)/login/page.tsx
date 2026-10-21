@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { AuthPanel } from "@/components/auth/auth-panel";
+import { SuperAdminForm } from "@/components/auth/super-admin-form";
 import { auth } from "@/lib/auth";
 import { safeReturnPath } from "@/lib/auth-redirect";
 import {
@@ -41,6 +42,9 @@ export default async function LoginPage({
             appleEnabled
             googleConfigured={isGoogleAuthConfigured()}
             appleConfigured={isAppleAuthConfigured()}
+          />
+          <SuperAdminForm
+            returnPath={returnPath === "/" ? "/admin" : returnPath}
           />
         </div>
       </div>
