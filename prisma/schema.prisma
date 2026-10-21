@@ -79,6 +79,7 @@ model User {
   interestTags  Json?
   accounts      Account[]
   sessions      Session[]
+  passwordResets PasswordResetToken[]
   pages         Page[]    @relation("PageAuthor")
   registrations EventRegistration[]
   eventInterests EventInterest[]
@@ -119,6 +120,18 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expires   DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Page {

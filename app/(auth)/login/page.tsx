@@ -3,28 +3,47 @@ import { redirect } from "next/navigation";
 import { AuthPanel } from "@/components/auth/auth-panel";
 import { auth } from "@/lib/auth";
 import { safeReturnPath } from "@/lib/auth-redirect";
-import { isAppleAuthConfigured, isGoogleAuthConfigured } from "@/lib/env";
+import {
+  isAppleAuthConfigured,
+  isGoogleAuthConfigured,
+} from "@/lib/env";
 
 export default async function LoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ next?: string }>;
 }) {
-  const session = await auth();
-  const params = await searchParams;
+  const [session, params] = await Promise.all([auth(), searchParams]);
+
   const returnPath = safeReturnPath(params.next);
 
   if (session?.user) {
-    redirect(returnPath === "/" && session.user.role === "ADMIN" ? "/admin" : returnPath);
+    redirect(returnPath);
   }
 
   return (
-    <div className="flex min-h-screen items-center bg-background px-6 py-16">
-      <AuthPanel
-        mode="login"
-        googleEnabled={isGoogleAuthConfigured()}
-        appleEnabled={isAppleAuthConfigured()}
-      />
-    </div>
+    <main className="flex flex-col items-center justify-center px-4 py-4 md:px-8 lg:min-h-screen">
+      <div className="grid max-w-lg items-center gap-12 lg:max-w-6xl lg:grid-cols-2">
+        <div>
+          <h2 className="text-4xl font-bold leading-tight text-foreground lg:text-5xl">
+            Seamless Login for Exclusive Access
+          </h2>
+          <p className="mt-6 text-base leading-relaxed text-muted">
+            Immerse yourself in a hassle-free login journey with our intuitively
+            designed login form. Effortlessly access your account.
+          </p>
+        </div>
+
+        <div className="w-full max-w-md lg:ml-auto">
+          <AuthPanel
+            mode="login"
+            googleEnabled
+            appleEnabled
+            googleConfigured={isGoogleAuthConfigured()}
+            appleConfigured={isAppleAuthConfigured()}
+          />
+        </div>
+      </div>
+    </main>
   );
 }

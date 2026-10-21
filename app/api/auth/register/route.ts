@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { z } from "zod";
 
+import { createEmailVerificationToken } from "@/lib/auth-tokens";
 import { prisma } from "@/lib/db";
 import { getAdminEmail, isDatabaseConfigured } from "@/lib/env";
+import { buildActionUrl, isEmailDeliveryConfigured, sendEmail } from "@/lib/mailer";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -51,5 +53,21 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.json({ ok: true });
+  const token = await createEmailVerificationToken(email);
+  let verificationUrl: string | undefined;
+
+  if (token) {
+    verificationUrl = buildActionUrl("/verify-email", token, email);
+    await sendEmail({
+      to: email,
+      subject: "Verify your GM Lawason email",
+      text: `Welcome to GM Lawason Studios. Confirm your email using this link (valid for 24 hours): ${verificationUrl}`,
+      url: verificationUrl,
+    });
+  }
+
+  return NextResponse.json({
+    ok: true,
+    verificationUrl: isEmailDeliveryConfigured() ? undefined : verificationUrl,
+  });
 }
